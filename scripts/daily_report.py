@@ -95,13 +95,22 @@ def run_all() -> tuple[list[dict], list[tuple[str, str]]]:
 
 
 def append_history(rows: list[dict]) -> None:
+    """Record today's run, one row per strategy.
+
+    Re-running on the same day replaces that day's rows rather than adding a
+    second set, so the file stays exactly one row per strategy per day however
+    many times the workflow is triggered.
+    """
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    new_file = not HISTORY.exists()
-    with HISTORY.open("a", newline="") as handle:
+    today = rows[0]["run_date"]
+    kept: list[dict] = []
+    if HISTORY.exists():
+        with HISTORY.open(newline="") as handle:
+            kept = [r for r in csv.DictReader(handle) if r.get("run_date") != today]
+    with HISTORY.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=HISTORY_FIELDS)
-        if new_file:
-            writer.writeheader()
-        for row in rows:
+        writer.writeheader()
+        for row in kept + rows:
             writer.writerow({key: row.get(key, "") for key in HISTORY_FIELDS})
 
 
