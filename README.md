@@ -1,5 +1,10 @@
 # Robinhood Agentic Backtester
 
+[![Tests](https://github.com/shanyukollipara/robinhood-agentic-backtester/actions/workflows/tests.yml/badge.svg)](https://github.com/shanyukollipara/robinhood-agentic-backtester/actions/workflows/tests.yml)
+[![Daily backtest](https://github.com/shanyukollipara/robinhood-agentic-backtester/actions/workflows/daily-backtest.yml/badge.svg)](https://github.com/shanyukollipara/robinhood-agentic-backtester/actions/workflows/daily-backtest.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 **Describe a trading strategy to your AI agent in plain English. Get a full
 backtest - monthly drawdowns, tearsheet, trade log - running locally on your
 machine.**
@@ -56,6 +61,17 @@ Try a bundled example - no account, no API key, no configuration:
 Plus `reports/golden_cross.html`: equity curve, underwater plot, a monthly
 returns heatmap, the month-by-month drawdown table, every statistic, and the
 full trade log - one self-contained file you can email to anyone.
+
+## Live results
+
+Every example strategy in this repo is re-run against fresh market data once a
+day and the results are committed: **[results/RESULTS.md](results/RESULTS.md)**.
+
+That file is a snapshot; [`results/history.csv`](results/history.csv) is the
+interesting one. It gains a row per strategy per day and never forgets, so over
+time it becomes a genuine out-of-sample record of how these strategies did
+*after* they were published - which is the only backtest number worth much.
+Nothing gets re-tuned between runs; when a number moves, the market moved.
 
 ## Using it with your AI agent
 
@@ -227,7 +243,14 @@ access, `--refresh` to re-download.
 ```
 
 The test suite is offline and deterministic - it generates synthetic prices
-rather than hitting any API.
+rather than hitting any API. It runs in CI on Python 3.10 through 3.13
+([`tests.yml`](.github/workflows/tests.yml)), alongside the daily backtest job
+([`daily-backtest.yml`](.github/workflows/daily-backtest.yml)) that refreshes
+the live results above. You can regenerate those locally at any time:
+
+```bash
+.venv/bin/python scripts/daily_report.py
+```
 
 Contributions welcome, especially: more indicators, options and crypto support,
 walk-forward and Monte Carlo analysis, and portfolio-level position sizing.
