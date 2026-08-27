@@ -1,0 +1,29 @@
+# Volatility-sized Donchian breakout with a trailing stop - risk 1% of equity
+# per position, sized off the ATR.
+name: ATR Breakout
+description: Buys 20-day highs, sizes by ATR risk, trails a 15% stop.
+symbols: [QQQ]
+start: 2012-01-01
+cash: 20000
+benchmark: QQQ
+
+params:
+  channel: 20
+  atr_len: 14
+
+rules:
+  entry: "close > donchian_high(high, channel)"
+  exit:  "close < donchian_low(low, 10)"
+
+sizing:
+  mode: atr_risk
+  risk_per_trade: 0.01
+  atr_window: 14
+  atr_mult: 2.0
+  max_weight: 1.0
+
+risk:
+  trailing_stop: 0.15
+
+fees:
+  slippage_bps: 6

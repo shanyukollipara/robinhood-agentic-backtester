@@ -1,0 +1,25 @@
+# The classic trend-following baseline: hold while the 50-day average is above
+# the 200-day average, sit in cash otherwise.
+name: Golden Cross
+description: Long SPY while the 50-day SMA is above the 200-day SMA.
+symbols: [SPY]
+start: 2010-01-01
+cash: 10000
+benchmark: SPY
+
+params:
+  fast: 50
+  slow: 200
+
+rules:
+  entry: "crossover(sma(close, fast), sma(close, slow))"
+  exit:  "crossunder(sma(close, fast), sma(close, slow))"
+
+sizing:
+  mode: full_equity
+
+fees:
+  slippage_bps: 5
+
+execution:
+  fill: next_open

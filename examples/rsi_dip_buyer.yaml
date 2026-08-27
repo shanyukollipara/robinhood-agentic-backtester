@@ -1,0 +1,33 @@
+# Short-term mean reversion: buy sharp oversold dips, but only while the
+# long-term trend is still up, and cut anything that keeps falling.
+name: RSI Dip Buyer
+description: Buys 2-day RSI washouts above the 200-day trend, exits on strength or an 8% stop.
+symbols: [SPY, QQQ, IWM]
+start: 2012-01-01
+cash: 10000
+benchmark: SPY
+
+params:
+  lookback: 2
+  oversold: 10
+  overbought: 60
+  trend: 200
+
+rules:
+  entry: "rsi(close, lookback) < oversold and close > sma(close, trend)"
+  exit:  "rsi(close, lookback) > overbought"
+
+sizing:
+  mode: equal_weight
+  max_weight: 0.34
+
+risk:
+  stop_loss: 0.08
+  max_hold_bars: 15
+
+fees:
+  slippage_bps: 5
+
+execution:
+  fill: next_open
+  max_positions: 3

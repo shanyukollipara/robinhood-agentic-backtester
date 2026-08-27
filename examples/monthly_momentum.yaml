@@ -1,0 +1,28 @@
+# Rotational momentum, rebalanced once a month: hold names that are above their
+# 6-month average and still in an uptrend.
+name: Monthly Momentum
+description: Monthly rebalance into large caps with positive 6-month momentum.
+symbols: [AAPL, MSFT, NVDA, AMZN, GOOGL, META]
+start: 2015-01-01
+cash: 25000
+benchmark: SPY
+rebalance: monthly
+
+params:
+  lookback: 126
+  trend: 100
+
+rules:
+  entry: "roc(close, lookback) > 0 and close > sma(close, trend)"
+  exit:  "roc(close, lookback) < 0 or close < sma(close, trend)"
+
+sizing:
+  mode: equal_weight
+  max_weight: 0.25
+
+execution:
+  fill: next_open
+  max_positions: 4
+
+fees:
+  slippage_bps: 8

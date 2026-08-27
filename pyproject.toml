@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rhbt"
+version = "0.1.0"
+description = "Robinhood Agentic Backtester - describe a trading strategy to your AI agent, get a full backtest tearsheet locally."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Robinhood Agentic Backtester contributors" }]
+keywords = ["backtesting", "trading", "robinhood", "mcp", "agent", "quant"]
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+data = ["yfinance>=0.2.40"]
+dev = ["pytest>=7.0", "yfinance>=0.2.40"]
+
+[project.scripts]
+rhbt = "rhbt.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["rhbt*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
