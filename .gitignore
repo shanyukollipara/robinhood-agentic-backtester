@@ -11,3 +11,8 @@ data/cache/*.json
 reports/*.html
 .pytest_cache/
 .DS_Store
+
+# Daily run artifacts. RESULTS.md and history.csv are committed; the full
+# per-strategy JSON and the HTML tearsheets are uploaded as workflow
+# artifacts instead, so the repo does not gain ~2 MB of churn every day.
+results/*.json
